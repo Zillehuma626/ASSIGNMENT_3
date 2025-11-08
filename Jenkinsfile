@@ -10,20 +10,20 @@ pipeline {
 
         stage('Build & Run Containers') {
             steps {
-                sh 'docker-compose down || true'
-                sh 'docker-compose up -d --build'
+                sh 'sudo docker-compose down || true'
+                sh 'sudo docker-compose up -d --build'
             }
         }
 
         stage('Verify Running Containers') {
             steps {
-                sh 'docker ps'
+                sh 'sudo docker ps'
             }
         }
 
         stage('Show Logs') {
             steps {
-                sh 'docker-compose logs --tail=50'
+                sh 'sudo docker-compose logs --tail=50'
             }
         }
     }
