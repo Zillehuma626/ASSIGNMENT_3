@@ -1,29 +1,34 @@
 # selenium-tests/Dockerfile
 FROM python:3.12-slim
 
-# Install dependencies
-RUN apt-get update && apt-get install -y wget unzip curl xvfb gnupg2 \
-    && apt-get clean
+# 1. Install system dependencies
+# Added --no-install-recommends to keep image small
+# Added rm -rf /var/lib/apt/lists/* to clean up apt cache
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    curl \
+    xvfb \
+    gnupg2 \
+    ca-certificates \
+    --no-install-recommends \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Chrome
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list \
-    && apt-get update && apt-get install -y google-chrome-stable
+# 2. Install Google Chrome (Fixed for Debian Trixie/Sid)
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update && apt-get install -y google-chrome-stable \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install ChromeDriver
-RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+') \
-    && LATEST=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION") \
-    && wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip" \
-    && unzip /tmp/chromedriver.zip -d /usr/local/bin/ && rm /tmp/chromedriver.zip
-
-# Set working directory
+# 3. Set working directory
 WORKDIR /app
 
-# Copy requirements and install
+# 4. Copy requirements and install
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy Selenium tests
+# 5. Copy Selenium tests
 COPY . .
 
+# 6. Run the test
 CMD ["python", "test8.py"]
