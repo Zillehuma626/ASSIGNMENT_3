@@ -15,7 +15,6 @@ pipeline {
             }
         }
 
-        
         stage('Verify Running Containers') {
             steps {
                 sh 'sudo docker ps'
@@ -27,9 +26,20 @@ pipeline {
                 sh 'sudo docker-compose logs --tail=50'
             }
         }
+
+        stage('Run Selenium Tests') {
+            steps {
+                sh 'sudo docker-compose run --rm selenium-tests'
+            }
+        }
     }
 
     post {
+        always {
+            echo "Archiving screenshots..."
+            sh 'mkdir -p screenshots'
+            sh 'sudo docker cp selenium-tests:/app/screenshots ./screenshots || true'
+        }
         success {
             echo "✅ CI Build Completed Successfully!"
         }
