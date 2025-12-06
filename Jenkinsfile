@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/MUGHEESULHASSAN/Deploying_3_Tier_Web_App_Using_Docker_Compose_And_Jenkins_Pipeline.git'
+                git branch: 'main', url: 'https://github.com/MUGHEESULHASSAN/testing-_mern_web_app_with_selenium_test_cases_with_jenkins_pipeline.git'
             }
         }
 
