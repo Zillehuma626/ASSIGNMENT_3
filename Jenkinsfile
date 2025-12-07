@@ -70,7 +70,7 @@ pipeline {
         success {
             script {
                 echo "✅ CI Build Completed Successfully!"
-                emailext (
+                mail (
                     subject: "Tests PASSED: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                     body: "All tests passed.\nBuild: ${env.BUILD_URL}",
                     to: "zille626@gmail.com,qasimalik@gmail.com"
@@ -80,7 +80,7 @@ pipeline {
         failure {
             script {
                 echo "❌ Build Failed. Check logs."
-                emailext (
+                mail (
                     subject: "Tests FAILED: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                     body: "Tests failed.\nBuild: ${env.BUILD_URL}",
                     to: "zille626@gmail.com,qasimalik@gmail.com"
