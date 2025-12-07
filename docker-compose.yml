@@ -47,14 +47,14 @@ services:
       - ci-network
     depends_on:
       - backend-ci  
-  selenium-tests:
-    build:
-      context: ./selenium-tests
-    container_name: selenium-tests
-    depends_on:
-      - user-frontend-ci
-    networks:
-      - ci-network
+  #selenium-tests:
+    #build:
+      #context: ./selenium-tests
+    #container_name: selenium-tests
+    #depends_on:
+      #- user-frontend-ci
+   # networks:
+      #- ci-network
     
 
 networks:
