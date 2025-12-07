@@ -72,9 +72,39 @@ pipeline {
     post {
         success {
             echo "✅ CI Build Completed Successfully!"
+
+            emailext(
+                to: 'qasimalik@gmail.com zille626@gmail.com',   
+                subject: "Build Success - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                The Jenkins pipeline completed successfully.
+
+                Job: ${env.JOB_NAME}
+                Build Number: ${env.BUILD_NUMBER}
+                Status: SUCCESS
+
+                Regards,
+                Jenkins CI
+                """
+            )
         }
+
         failure {
             echo "❌ Build Failed. Check logs."
+
+            emailext(
+                to: 'qasimalik@gmail.com zille626@gmail.com',   
+                subject: "Build Failed - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                The Jenkins pipeline FAILED.
+
+                Job: ${env.JOB_NAME}
+                Build Number: ${env.BUILD_NUMBER}
+                Status: FAILED
+
+                Check the build logs for more details.
+                """
+            )
         }
     }
 }
