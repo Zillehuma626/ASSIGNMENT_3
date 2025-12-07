@@ -74,7 +74,7 @@ pipeline {
             echo "✅ CI Build Completed Successfully!"
 
             emailext(
-                to: 'qasimalik@gmail.com zille626@gmail.com',   
+                to: 'qasimalik@gmail.com,zille626@gmail.com',   
                 subject: "Build Success - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
                 The Jenkins pipeline completed successfully.
@@ -93,7 +93,7 @@ pipeline {
             echo "❌ Build Failed. Check logs."
 
             emailext(
-                to: 'qasimalik@gmail.com zille626@gmail.com',   
+                to: 'qasimalik@gmail.com,zille626@gmail.com',   
                 subject: "Build Failed - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
                 The Jenkins pipeline FAILED.
